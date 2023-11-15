@@ -61,9 +61,10 @@ namespace WPF_Cassandra
         bool is_filter = false;
         private static Table<UserData>? UserData { get; set; }
         private Guid? DataGrig_Id;
-        private ICluster? Cluster { get; set; }
+        private ICluster? Cluster { get => cluster; set => cluster = value; }
         private ISession? Session { get; set; }
         private static JsonConnection? ParamJson;
+        private ICluster? cluster;
 
         public MainWindow()
         {
@@ -165,7 +166,7 @@ namespace WPF_Cassandra
                 else if (value_type.Text == "bool")
                 {
                     m_value1_bool = false;
-                    if (m_value1.ToUpper() == "T" || m_value1.ToLower() == "true") m_value1_bool = true;
+                    if (m_value1.Equals("T", StringComparison.CurrentCultureIgnoreCase) || m_value1.Equals("true", StringComparison.CurrentCultureIgnoreCase)) m_value1_bool = true;
                     DataGrid1.ItemsSource = UserData.Select(a => a).Execute().Where(p => p.BoolValue == m_value1_bool);
                 }
                 else if (value_type.Text == "date")
